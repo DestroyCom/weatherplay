@@ -13,6 +13,7 @@
             <p @click="updateCity" v-if='cityTemp != null '>RECHERCHER</p>
           </div>
           <div>
+            <h4>Vos favoris:</h4>
             <DisplayFavorites :key='getCityGlobal' />
           </div>
           <p>Powered by</p>

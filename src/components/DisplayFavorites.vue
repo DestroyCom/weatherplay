@@ -71,6 +71,13 @@ margin-bottom: 5vh;
     border-bottom: black solid 1px;
     display: flex;
     justify-content: space-between;
+    opacity: 1;
+    transition: opacity 0.5s;
+
+    &:hover{
+      cursor: pointer;
+      opacity: 0.5;
+    }
 
     img{
       max-width: 25%;
