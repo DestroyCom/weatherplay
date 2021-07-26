@@ -37,6 +37,9 @@ export default {
     getCityDouble(){
       return this.$store.state.city;
     }
+  },
+  mounted(){
+    this.$store.commit('setFavoritesCity');
   }
 }
 </script>

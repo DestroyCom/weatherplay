@@ -1,6 +1,6 @@
 import {
   createStore
-} from 'vuex'
+} from 'vuex';
 const axios = require('axios');
 
 export default createStore({
@@ -17,8 +17,12 @@ export default createStore({
     setCityFromSearchInput(state, newValue) {
       state.city = newValue;
     },
-    setFavoritesCity() {
-      console.log('temp')
+    setFavoritesCity(state) {
+      console.log('favcity', state.favoritesCity, localStorage.getItem('favoritesCityWeatherPlay'))
+      if(localStorage.getItem('favoritesCityWeatherPlay')){
+        console.log('localstorage existant')
+        state.favoritesCity = JSON.parse(localStorage.getItem('favoritesCityWeatherPlay'));
+      }
     },
     setReponseRealtime(state, rep) {
       state.responseRealtime = rep;
@@ -54,7 +58,30 @@ export default createStore({
           console.log(error);
           state.errorForecast = error;
         })
-    }
+    },
+    addFavoritesCity({
+      state,
+      commit
+    }, city) {
+        let temp = state.favoritesCity;
+        temp.push(city);
+        console.log('favcity', state.favoritesCity)
+        commit('favoritesCity', temp);
+        localStorage.setItem('favoritesCityWeatherPlay', JSON.stringify(state.favoritesCity))
+    },
+    removeFavoritesCity({
+      state,
+      commit
+    }, city) {
+        let temp = state.favoritesCity;
+        let indexOfCity = temp.indexOf(city)
+        if(indexOfCity > -1){
+          temp.splice(indexOfCity, 1);
+        }
+        commit('favoritesCity', temp);
+        console.log('favcity', state.favoritesCity)
+        localStorage.setItem('favoritesCityWeatherPlay', JSON.stringify(state.favoritesCity));
+    },
   },
   modules: {}
 })

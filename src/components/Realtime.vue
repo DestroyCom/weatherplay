@@ -1,7 +1,9 @@
 <template>
   <section id='realTime' v-if="getRealtimeGlobal !== null">
       <div>
-          <h3>{{getRealtimeGlobal.data.location.name + ', ' + getRealtimeGlobal.data.location.region + ', ' + getRealtimeGlobal.data.location.country }}</h3>
+          <h3>{{getRealtimeGlobal.data.location.name + ', ' + getRealtimeGlobal.data.location.region + ', ' + getRealtimeGlobal.data.location.country }}</h3> 
+          <img :src="starRegular" v-if="whichStar === 'inactive'" @click="updateFav" title="Ajouter au favoris" >
+          <img :src="starSolid" v-if="whichStar === 'active'" @click="updateFav" title="Retirer des favoris" >
           <div>
             <p>Derniere mise à jour : {{ getRealtimeGlobal.data.current.last_updated }}</p>
             <img :src='refresh' @click='refreshResult'>
@@ -9,10 +11,11 @@
       </div>
       <div>
           <div> 
-                <img :src='getRealtimeGlobal.data.current.condition.icon' />
+                <DisplayIcon v-bind:conditionCode="getRealtimeGlobal.data.current.condition.code" />
                 <p> {{getRealtimeGlobal.data.current.condition.text}} </p>
           </div>
           <div>
+              <h4>Météo actuelle</h4>
               <p>Temperature : {{getRealtimeGlobal.data.current.temp_c}}  C°</p>
               <p>Vitesse du vent : {{getRealtimeGlobal.data.current.wind_kph}} km/h</p>
               <p>Direction du vent : {{getRealtimeGlobal.data.current.wind_dir}} </p>
@@ -25,12 +28,21 @@
 
 <script>
 import refresh from '../assets/refresh.svg';
+import starRegular from '../assets/starRegular.svg';
+import starSolid from '../assets/starSolid.svg';
+import DisplayIcon from './DisplayIcon.vue';
 
 export default {
+  components:{
+    DisplayIcon
+  },
   name: 'Realtime',
   data(){
     return{
-      refresh: refresh
+      refresh: refresh,
+      starRegular: starRegular,
+      starSolid: starSolid,
+      whichStar: 'inactive',
     }
   },
   computed:{
@@ -40,12 +52,42 @@ export default {
     getCityGlobal(){
       return this.$store.state.city;
     },
+    getFavorites(){
+      return this.$store.state.favoritesCity;
+    },
   },
   methods:{
     refreshResult(){
       this.$store.dispatch('callRealtime', this.getCityGlobal);
       this.$store.dispatch('callForecast', this.getCityGlobal);
+    },
+    updateFav(){
+      if(this.whichStar === 'active'){
+        this.$store.dispatch('removeFavoritesCity', this.getCityGlobal, false);
+        this.whichStar = 'inactive';
+      }
+      else{
+        this.$store.dispatch('addFavoritesCity', this.getCityGlobal, true);
+        this.whichStar = 'active';
+      }
     }
+  },
+  watch:{
+    getRealtimeGlobal: function(newValue){
+      console.log(newValue)
+      if(this.$store.state.favoritesCity.find(el => el.toLowerCase()=== newValue.data.location.name.toLowerCase())){
+        console.log('est favori')
+        this.whichStar = 'active';
+      }
+    },
+    getCityGlobal: function(newValue){
+      if(this.$store.state.favoritesCity.find(el => el.toLowerCase()=== newValue.toLowerCase())){
+        console.log('est favori')
+        this.whichStar = 'active';
+      }else{
+        this.whichStar = 'inactive';
+      }
+    },
   }
 }
 </script>
@@ -54,36 +96,46 @@ export default {
 <style scoped lang="scss">
 #realTime {
   margin-top: 1vh;
-  height: 50vh;
+  height: 48vh;
   width: 90vw;
   display: flex;
   flex-direction: column;
   align-self: center;
-  z-index: 1;
-  > div {
+  overflow: hidden;
+
+  >div {
     &:nth-child(1) {
       display: flex;
       justify-content: space-between;
       align-items: center;
 
-      
-      div{
+      >img {
+        max-width: 4vw;
+
+        &:hover{
+          cursor: pointer;
+        }
+      }
+
+      div {
         display: flex;
         justify-content: space-evenly;
         align-items: center;
         width: 30vw;
-      >img{
-        width: 2vw;
-        min-width: 30px;
-        opacity: 1;
-        transition: opacity 0.5s;
 
-        &:hover{
-          cursor: pointer;
-          animation: rotation 2s infinite alternate linear;
-          opacity: 0.5;
+        >img {
+          width: 2vw;
+          max-width: 35px !important;
+          min-width: 30px;
+          opacity: 1;
+          transition: opacity 0.5s;
+
+          &:hover {
+            cursor: pointer;
+            animation: rotation 2s infinite alternate linear;
+            opacity: 0.5;
+          }
         }
-      }
       }
 
     }
@@ -93,13 +145,28 @@ export default {
       justify-content: space-around;
       border: black solid 1px;
       border-radius: 10px;
-      padding: 2%;
+      margin: 1%;
 
-      > div {
-        &:nth-child(1), &:nth-child(2) {
+      >div {
+
+        &:nth-child(1),
+        &:nth-child(2) {
+          margin-top: auto;
+          margin-bottom: auto;
           display: flex;
           flex-direction: column;
+          width: 15vw;
         }
+
+        &:nth-child(1)>img {
+          max-width: 75%;
+          align-self: center;
+        }
+
+        &:nth-child(2)>p {
+          margin: 3.5%;
+        }
+
       }
     }
   }
@@ -109,6 +176,7 @@ export default {
   0% {
     transform: rotate(0deg);
   }
+
   100% {
     transform: rotate(359deg);
   }
