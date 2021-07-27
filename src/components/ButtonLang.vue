@@ -1,0 +1,51 @@
+<template>
+  <div class="buttonLang">
+      <p v-if="$i18n.locale === 'fr'"  @click="switchLang('en')">English version</p>
+      <p v-if="$i18n.locale === 'en'" @click="switchLang('fr')">Version française</p>
+  </div>
+</template>
+
+<script>
+export default {
+  name: 'ButtonLang',
+  data(){
+    return{
+    }
+  },
+  components:{},
+  props: {},
+  computed:{},
+  methods:{
+      switchLang(locale){
+          console.log(locale)
+          if(this.$i18n.locale !== locale){
+              this.$i18n.locale = locale;
+          }
+      }
+  },
+  watch:{},
+  mounted() {}
+  }
+</script>
+
+<!-- Add "scoped" attribute to limit CSS to this component only -->
+<style lang="scss">
+.buttonLang {
+    display: flex !important;
+    justify-content: space-evenly !important;
+    max-width: 15vw !important;
+    height: 80%;
+    text-align: center;
+    border: black solid 1px;
+    margin: 1%;
+    align-self: center;
+    transition: color 0.5s, background-color 0.5s;
+    
+    &:hover{
+        color: white;
+        background-color: black;
+        cursor: pointer;
+    }
+
+}
+</style>

@@ -3,7 +3,15 @@
     <h1>weatherPlay</h1>
     <p>{{ $t('searchIndication') }}</p>
     <input type="text" v-model="cityTemp" placeholder="Paris, France" />
-    <p @click="updateCity" v-if='cityTemp != null '>{{ $t('searchButton') }}</p>
+    <div>
+    <div @click="updateCity" v-if='cityTemp != null ' class="buttonSearchAvailable">
+      <p>{{ $t('searchButton') }}</p>
+    </div>
+    <div v-if='cityTemp === null ' class="buttonSearch">
+      <p>{{ $t('searchButton') }}</p>
+    </div>
+    <ButtonLang />
+    </div>
     <div>
       <h3>{{ $t('favoritesMessage') }}</h3>
       <DisplayFavorites :key='cityTemp' />
@@ -14,6 +22,7 @@
 
 <script>
 import DisplayFavorites from './DisplayFavorites.vue';
+import ButtonLang from './ButtonLang.vue';
 
 export default {
   name: 'Home',
@@ -23,7 +32,8 @@ export default {
     }
   },
   components:{
-    DisplayFavorites
+    DisplayFavorites,
+    ButtonLang
   },
   computed:{
   },
@@ -46,8 +56,70 @@ export default {
     flex-direction: column;
     align-items: center;
 
-    >div{
+  >div:nth-child(4){
+        display: flex;
+        justify-content: space-evenly;
+        width: 40vw;
+        >p{
+          text-align: center;
+          align-self: center;
+          height: 80%;
+          vertical-align: middle;
+        }
+      }
+
+    >div:nth-child(5){
+      margin-top: 1%;
       width: 20vw;
+      overflow-y: auto;
+
+      >h3{
+        margin: 0;
+      }
+
+      &::-webkit-scrollbar-track {
+        -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
+        box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3) ;
+        border-radius: 10px;
+        background-color: #F5F5F5;
+      }
+
+      &::-webkit-scrollbar {
+        width: 12px;
+        background-color: #F5F5F5;
+      }
+
+      &::-webkit-scrollbar-thumb {
+        border-radius: 10px;
+        -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, .3);
+        box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3) ;
+        background-color: #555;
+      }
     }
   }
+
+.buttonSearch {
+    display: flex !important;
+    justify-content: space-evenly !important;
+    max-width: 15vw !important;
+    text-align: center;
+    border: black solid 1px;
+    margin: 1%;
+}
+
+.buttonSearchAvailable {
+    display: flex !important;
+    justify-content: space-evenly !important;
+    max-width: 15vw !important;
+    text-align: center;
+    border: black solid 1px;
+    margin: 1%;
+    transition: color 0.5s, background-color 0.5s;
+    
+    &:hover{
+        color: white;
+        background-color: black;
+        cursor: pointer;
+    }
+}
 </style>

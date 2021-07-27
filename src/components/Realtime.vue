@@ -9,6 +9,7 @@
           <div>
             <p>{{ $t('lastUpdate') }} {{ getRealtimeGlobal.data.current.last_updated }}</p>
             <img :src='refresh' @click='refreshResult'>
+            <ButtonLang />
           </div>
       </div>
       <div>
@@ -35,10 +36,12 @@ import refresh from '../assets/refresh.svg';
 import starRegular from '../assets/starRegular.svg';
 import starSolid from '../assets/starSolid.svg';
 import DisplayIcon from './DisplayIcon.vue';
+import ButtonLang from './ButtonLang.vue';
 
 export default {
   components:{
-    DisplayIcon
+    DisplayIcon,
+    ButtonLang
   },
   name: 'Realtime',
   data(){
@@ -122,7 +125,7 @@ export default {
         display: flex;
         justify-content: space-evenly;
         align-items: center;
-        width: 30vw;
+        width: 40vw;
 
         >img {
           width: 2vw;
@@ -130,12 +133,20 @@ export default {
           min-width: 30px;
           opacity: 1;
           transition: opacity 0.5s;
+          margin: 1%;
 
           &:hover {
             cursor: pointer;
             animation: rotation 2s infinite alternate linear;
             opacity: 0.5;
           }
+        }
+      }
+
+      >div:nth-child(2){
+        >p{
+          min-width: 25vw;
+          text-align: center;
         }
       }
 
@@ -166,6 +177,7 @@ export default {
 
         &:nth-child(2)>p {
           margin: 3.5%;
+          min-width: 20vw;
         }
 
       }

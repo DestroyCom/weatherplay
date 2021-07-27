@@ -10,7 +10,8 @@
           <div>
             <p>{{ $t('searchIndication') }}</p>
             <input type="text" v-model="cityTemp" placeholder="Paris, France" />
-            <p @click="updateCity" v-if='cityTemp != null '>{{ $t('searchButton') }}</p>
+            <p @click="updateCity" v-if='cityTemp != null ' class="buttonSearchAvailable">{{ $t('searchButton') }}</p>
+            <p  v-if='cityTemp === null ' class="buttonSearch">{{ $t('searchButton') }}</p>
           </div>
           <div>
             <h4>{{ $t('favoritesMessage') }}</h4>
@@ -100,9 +101,9 @@ nav {
     flex-direction: column;
     align-self: center;
     align-items: center;
-
+    text-align: center;
     >h1{
-      margin-top: 0;
+      margin: 0;
     }
 
     >div:nth-child(3) {
@@ -112,6 +113,7 @@ nav {
       width: 100%;
 
       &::-webkit-scrollbar-track {
+        box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3) ;
         -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
         border-radius: 10px;
         background-color: #F5F5F5;
@@ -124,6 +126,7 @@ nav {
 
       &::-webkit-scrollbar-thumb {
         border-radius: 10px;
+        box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3) ;
         -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, .3);
         background-color: #555;
       }
@@ -155,5 +158,30 @@ nav {
     cursor: pointer;
     opacity: 0.5;
   }
+}
+
+.buttonSearch {
+    display: flex !important;
+    justify-content: space-evenly !important;
+    max-width: 15vw !important;
+    text-align: center;
+    border: black solid 1px;
+    margin: 1%;
+}
+
+.buttonSearchAvailable {
+    display: flex !important;
+    justify-content: space-evenly !important;
+    max-width: 15vw !important;
+    text-align: center;
+    border: black solid 1px;
+    margin: 1%;
+    transition: color 0.5s, background-color 0.5s;
+    
+    &:hover{
+        color: white;
+        background-color: black;
+        cursor: pointer;
+    }
 }
 </style>
