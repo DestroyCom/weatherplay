@@ -56,6 +56,7 @@ export default createStore({
           commit('setReponseRealtime', response);
         })
         .catch(function (error) {
+          location.reload()
           state.errorRealtime = error;
         })
     },
@@ -75,7 +76,7 @@ export default createStore({
           commit('setReponseForecast', response);
         })
         .catch(function (error) {
-          console.log(error);
+          location.reload()
           state.errorForecast = error;
         })
     },

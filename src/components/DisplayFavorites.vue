@@ -50,8 +50,8 @@ export default {
               .then(function (response) {
                   tempValue.push(response.data.current.condition.code)
               })
-              .catch(function (error) {
-                  console.log(error)
+              .catch(function () {
+                  location.reload()
               })
 
           this.codeCondition = tempValue
@@ -74,11 +74,11 @@ margin-bottom: 5vh;
     display: flex;
     justify-content: space-between;
     opacity: 1;
-    transition: opacity 0.5s;
+    transition: background-color 0.5s;
 
     &:hover{
+      background-color: #00568f;
       cursor: pointer;
-      opacity: 0.5;
     }
 
     >img:nth-child(1){

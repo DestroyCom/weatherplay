@@ -8,7 +8,7 @@
         </div>
           <div>
             <p>{{ $t('lastUpdate') }} {{ getRealtimeGlobal.data.current.last_updated }}</p>
-            <img :src='refresh' @click='refreshResult'>
+            <img :src='refresh' @click='refreshResult' class="invert">
             <ButtonLang />
           </div>
       </div>
@@ -158,6 +158,7 @@ export default {
       border: black solid 1px;
       border-radius: 10px;
       margin: 1%;
+      background-color: #01497c;
 
       >div {
 
@@ -193,5 +194,9 @@ export default {
   100% {
     transform: rotate(359deg);
   }
+}
+
+.invert{
+  filter: invert(100%);
 }
 </style>

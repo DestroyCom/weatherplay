@@ -56,6 +56,26 @@ export default {
     flex-direction: column;
     align-items: center;
 
+    ::placeholder{
+      color: white;
+    }
+
+    >input{
+      border: none;
+      border-bottom: white solid 1px;
+      background-color: transparent;
+      outline: none;
+      color: white;
+      
+      &:focus{
+        color: white;
+      }
+
+      &:focus::placeholder{
+          color: white;
+        }
+    }
+
   >div:nth-child(4){
         display: flex;
         justify-content: space-evenly;
@@ -103,7 +123,7 @@ export default {
     justify-content: space-evenly !important;
     max-width: 15vw !important;
     text-align: center;
-    border: black solid 1px;
+    border: #00568f solid 1px;
     margin: 1%;
 }
 
@@ -112,13 +132,12 @@ export default {
     justify-content: space-evenly !important;
     max-width: 15vw !important;
     text-align: center;
-    border: black solid 1px;
+    border: #00568f solid 1px;
     margin: 1%;
-    transition: color 0.5s, background-color 0.5s;
+    transition: background-color 0.5s;
     
     &:hover{
-        color: white;
-        background-color: black;
+        background-color: #245e7f;
         cursor: pointer;
     }
 }

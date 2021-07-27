@@ -44,13 +44,15 @@ export default {
 </script>
 
 <style lang="scss">
+@import url('https://fonts.googleapis.com/css2?family=Comfortaa:wght@300;400;500;600;700&display=swap');
 html, body{
   margin: 0;
   padding: 0;
 }
 #app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  color: #2c3e50;
+  background-color: #011728;
+  font-family: 'Comfortaa',Avenir, Helvetica, Arial, sans-serif;
+  color: white;
   margin: 0;
   padding: 0;
   width: 100%;

@@ -53,7 +53,7 @@
               <p>{{ $t('cloud') }} {{tmpDayHourDetails.cloud}}% </p>
             </div>
           </div>
-          <img :src='close' @click='triggerDetails({})' class="iconMenu">
+          <img :src='close' @click='triggerDetails({})' class="iconMenu invert">
         </div>
       </div>
     </div>
@@ -74,7 +74,7 @@ export default {
   data() {
     return {
       Chart: Chart,
-      DisplayIcon : DisplayIcon,
+      DisplayIcon: DisplayIcon,
       close: close,
       displayDetails: false,
       hourDay: false,
@@ -98,28 +98,32 @@ export default {
           display: true,
           position: 'bottom',
           labels: {
-            fontColor: "#000000",
+            fontColor: "#FFFFFF",
           }
         },
         scales: {
-          x: {
+          yAxes: [{
+            display: true,
+            title: { 
+              display: true, 
+              align: 'center', 
+              value: '°C' 
+              },
+            ticks: {
+              fontColor: 'white'
+            },
+          }],
+          xAxes: [{
             display: true,
             title: {
-              display: true,
-              align: 'center',
-              value: 'Heures'
-            }
-          },
-          y: {
-            display: true,
-            title: {
-              display: true,
-              align: 'center',
-              value: '°C'
-            }
-          },
-          suggestedMin: -50,
-          suggestedMax: 50
+               display: true,
+                align: 'center',
+                value: 'Heures' 
+             },
+            ticks: {
+              fontColor: 'white'
+            },
+          }]
         },
         maintainAspectRatio: false,
         responsive: true,
@@ -128,10 +132,10 @@ export default {
       }
     }
   },
-  watch:{
-    getForecastGlobal: function(){
+  watch: {
+    getForecastGlobal: function () {
       this.hourDay = false;
-      this.displayDetails =  false;
+      this.displayDetails = false;
     }
   },
   computed: {
@@ -157,12 +161,11 @@ export default {
       }
     },
     handle(point, event) {
-      try{
+      try {
         let item = event[0];
         this.tmpDayHourDetails = this.tmpDayDetails.hour[item._index];
         this.hourDay = true;
-      }
-      catch{
+      } catch {
         return;
       }
     },
@@ -188,15 +191,14 @@ export default {
       return tempString;
     },
     formatHour(hour) {
-      if(this.$i18n.locale === 'en'){
+      if (this.$i18n.locale === 'en') {
         console.log(hour.slice(-5).substring(0, 2))
-        if(parseInt(hour.slice(-5).substring(0, 2)) > 12){
+        if (parseInt(hour.slice(-5).substring(0, 2)) > 12) {
           let hourTemp = parseInt(hour.slice(-5).substring(0, 2));
           hourTemp = hourTemp - 12
           hourTemp = hourTemp.toString()
           return hourTemp + ':' + hour.slice(-2) + ' PM'
-        }
-        else{
+        } else {
           return hour.slice(-5) + ' AM'
         }
       }
@@ -223,6 +225,7 @@ export default {
 
     >div {
       border: black solid 1px;
+      background-color: #01497c;
       border-radius: 10px;
       margin-right: 2%;
       margin-left: 2%;
@@ -259,6 +262,7 @@ export default {
       display: flex;
       justify-content: space-around;
       border: black solid 1px;
+      background-color: #01497c;
       border-radius: 10px;
       width: 88vw;
       margin-right: auto;
@@ -273,6 +277,25 @@ export default {
       >div:nth-child(2){
         height: 40vh;
         overflow-y: auto;
+
+        &::-webkit-scrollbar-track {
+        box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3) ;
+        -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
+        border-radius: 10px;
+        background-color: #01497c;
+      }
+
+      &::-webkit-scrollbar {
+        width: 12px;
+        background-color: #01497c;
+      }
+
+      &::-webkit-scrollbar-thumb {
+        border-radius: 10px;
+        box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3) ;
+        -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, .3);
+        background-color: #FFFFFF;
+      }
 
         >h4{
           margin-top: 0;
@@ -313,5 +336,9 @@ export default {
       }
     }
   }
+}
+
+.invert{
+  filter: invert(100%);
 }
 </style>

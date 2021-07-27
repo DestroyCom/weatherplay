@@ -36,14 +36,13 @@ export default {
     max-width: 15vw !important;
     height: 80%;
     text-align: center;
-    border: black solid 1px;
+    border: #00568f solid 1px;
     margin: 1%;
     align-self: center;
-    transition: color 0.5s, background-color 0.5s;
+    transition: background-color 0.5s;
     
     &:hover{
-        color: white;
-        background-color: black;
+        background-color: #245e7f;
         cursor: pointer;
     }
 
