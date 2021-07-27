@@ -1,33 +1,39 @@
 <template>
   <section id='realTime' v-if="getRealtimeGlobal !== null">
+    <div>
       <div>
-        <div>
-          <h3>{{getRealtimeGlobal.data.location.name + ', ' + getRealtimeGlobal.data.location.region + ', ' + getRealtimeGlobal.data.location.country }}</h3> 
-          <img :src="starRegular" v-if="whichStar === 'inactive'" @click="updateFav" :title="$t('addFavorite')" >
-          <img :src="starSolid" v-if="whichStar === 'active'" @click="updateFav" :title="$t('removeFavorite')" >
-        </div>
-          <div>
-            <p>{{ $t('lastUpdate') }} {{ getRealtimeGlobal.data.current.last_updated }}</p>
-            <img :src='refresh' @click='refreshResult' class="invert">
-            <ButtonLang />
-          </div>
+        <h3>
+          {{getRealtimeGlobal.data.location.name + ', ' + getRealtimeGlobal.data.location.region + ', ' + getRealtimeGlobal.data.location.country }}
+        </h3>
+        <img :src="starRegular" v-if="whichStar === 'inactive'" @click="updateFav" :title="$t('addFavorite')">
+        <img :src="starSolid" v-if="whichStar === 'active'" @click="updateFav" :title="$t('removeFavorite')">
       </div>
       <div>
-          <div> 
-                <DisplayIcon v-bind:conditionCode="getRealtimeGlobal.data.current.condition.code" />
-                <p> {{getRealtimeGlobal.data.current.condition.text}} </p>
-          </div>
-          <div>
-              <h4>{{ $t('actualWeather') }}</h4>
-              <p v-if="$i18n.locale === 'fr'">{{ $t('temp') }} {{getRealtimeGlobal.data.current.temp_c}}  {{ $t('tempUnit') }}</p>
-              <p v-if="$i18n.locale === 'fr'">{{ $t('windSpeed') }} {{getRealtimeGlobal.data.current.wind_kph}} {{ $t('speedUnit') }}</p>
-              <p v-if="$i18n.locale === 'en'">{{ $t('temp') }} {{getRealtimeGlobal.data.current.temp_f}}  {{ $t('tempUnit') }}</p>
-              <p v-if="$i18n.locale === 'en'">{{ $t('windSpeed') }} {{getRealtimeGlobal.data.current.wind_mph}} {{ $t('speedUnit') }}</p>
-              <p>{{ $t('windDir') }} {{getRealtimeGlobal.data.current.wind_dir}} </p>
-              <p>{{ $t('humidity') }} {{getRealtimeGlobal.data.current.humidity}}% </p>
-              <p>{{ $t('cloud') }} {{getRealtimeGlobal.data.current.cloud}}% </p>
-          </div>
+        <p>{{ $t('lastUpdate') }} {{ getRealtimeGlobal.data.current.last_updated }}</p>
+        <img :src='refresh' @click='refreshResult' class="invert">
+        <ButtonLang />
       </div>
+    </div>
+    <div>
+      <div>
+        <DisplayIcon v-bind:conditionCode="getRealtimeGlobal.data.current.condition.code" />
+        <p> {{getRealtimeGlobal.data.current.condition.text}} </p>
+      </div>
+      <div>
+        <h4>{{ $t('actualWeather') }}</h4>
+        <p v-if="$i18n.locale === 'fr'">{{ $t('temp') }} {{getRealtimeGlobal.data.current.temp_c}} {{ $t('tempUnit') }}
+        </p>
+        <p v-if="$i18n.locale === 'fr'">{{ $t('windSpeed') }} {{getRealtimeGlobal.data.current.wind_kph}}
+          {{ $t('speedUnit') }}</p>
+        <p v-if="$i18n.locale === 'en'">{{ $t('temp') }} {{getRealtimeGlobal.data.current.temp_f}} {{ $t('tempUnit') }}
+        </p>
+        <p v-if="$i18n.locale === 'en'">{{ $t('windSpeed') }} {{getRealtimeGlobal.data.current.wind_mph}}
+          {{ $t('speedUnit') }}</p>
+        <p>{{ $t('windDir') }} {{getRealtimeGlobal.data.current.wind_dir}} </p>
+        <p>{{ $t('humidity') }} {{getRealtimeGlobal.data.current.humidity}}% </p>
+        <p>{{ $t('cloud') }} {{getRealtimeGlobal.data.current.cloud}}% </p>
+      </div>
+    </div>
   </section>
 </template>
 
@@ -39,56 +45,55 @@ import DisplayIcon from './DisplayIcon.vue';
 import ButtonLang from './ButtonLang.vue';
 
 export default {
-  components:{
+  components: {
     DisplayIcon,
     ButtonLang
   },
   name: 'Realtime',
-  data(){
-    return{
+  data() {
+    return {
       refresh: refresh,
       starRegular: starRegular,
       starSolid: starSolid,
       whichStar: 'inactive',
     }
   },
-  computed:{
-    getRealtimeGlobal(){
+  computed: {
+    getRealtimeGlobal() {
       return this.$store.state.responseRealtime;
     },
-    getCityGlobal(){
+    getCityGlobal() {
       return this.$store.state.city;
     },
-    getFavorites(){
+    getFavorites() {
       return this.$store.state.favoritesCity;
     },
   },
-  methods:{
-    refreshResult(){
+  methods: {
+    refreshResult() {
       this.$store.dispatch('callRealtime', this.getCityGlobal);
       this.$store.dispatch('callForecast', this.getCityGlobal);
     },
-    updateFav(){
-      if(this.whichStar === 'active'){
+    updateFav() {
+      if (this.whichStar === 'active') {
         this.$store.dispatch('removeFavoritesCity', this.getCityGlobal, false);
         this.whichStar = 'inactive';
-      }
-      else{
+      } else {
         this.$store.dispatch('addFavoritesCity', this.getCityGlobal, true);
         this.whichStar = 'active';
       }
     }
   },
-  watch:{
-    getRealtimeGlobal: function(newValue){
-      if(this.$store.state.favoritesCity.find(el => el.toLowerCase()=== newValue.data.location.name.toLowerCase())){
+  watch: {
+    getRealtimeGlobal: function (newValue) {
+      if (this.$store.state.favoritesCity.find(el => el.toLowerCase() === newValue.data.location.name.toLowerCase())) {
         this.whichStar = 'active';
       }
     },
-    getCityGlobal: function(newValue){
-      if(this.$store.state.favoritesCity.find(el => el.toLowerCase()=== newValue.toLowerCase())){
+    getCityGlobal: function (newValue) {
+      if (this.$store.state.favoritesCity.find(el => el.toLowerCase() === newValue.toLowerCase())) {
         this.whichStar = 'active';
-      }else{
+      } else {
         this.whichStar = 'inactive';
       }
     },
@@ -116,7 +121,7 @@ export default {
       >img {
         max-width: 4vw;
 
-        &:hover{
+        &:hover {
           cursor: pointer;
         }
       }
@@ -141,13 +146,34 @@ export default {
             opacity: 0.5;
           }
         }
+
+        @media only screen and (max-width: 1025px) {
+          width: 85vw;
+        }
       }
 
-      >div:nth-child(2){
-        >p{
+      >div:nth-child(2) {
+        >p {
           min-width: 25vw;
           text-align: center;
+
+          @media only screen and (max-width: 1025px) {
+            width: 85vw;
+          }
         }
+
+        >div {
+
+          @media only screen and (max-width: 1025px) {
+            width: 1vw !important;
+            height: 50% !important;
+          }
+
+        }
+      }
+
+      @media only screen and (max-width: 1025px) {
+        flex-direction: column;
       }
 
     }
@@ -169,11 +195,21 @@ export default {
           display: flex;
           flex-direction: column;
           width: 15vw;
+
+          @media only screen and (max-width: 1025px) {
+            width: 50%;
+          }
         }
 
         &:nth-child(1)>img {
           max-width: 75%;
           align-self: center;
+        }
+
+        &:nth-child(1)>p {
+          @media only screen and (max-width: 1025px) {
+            text-align: center;
+          }
         }
 
         &:nth-child(2)>p {
@@ -182,7 +218,17 @@ export default {
         }
 
       }
+
+      @media only screen and (max-width: 1025px) {
+        width: 85vw;
+        justify-content: space-evenly
+      }
     }
+  }
+
+  @media only screen and (max-width: 1025px) {
+    height: auto;
+    margin-left: 6vw;
   }
 }
 
@@ -196,7 +242,7 @@ export default {
   }
 }
 
-.invert{
+.invert {
   filter: invert(100%);
 }
 </style>

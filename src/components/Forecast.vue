@@ -7,8 +7,8 @@
           @click="triggerDetails(day)">
           <h4> {{formateDate(day.date)}} </h4>
           <div>
-          <DisplayIcon v-bind:conditionCode="day.day.condition.code" />
-          <p> {{day.day.condition.text}} </p>
+            <DisplayIcon v-bind:conditionCode="day.day.condition.code" />
+            <p> {{day.day.condition.text}} </p>
           </div>
           <p v-if="$i18n.locale === 'fr'">{{ $t('avgTemp') }} {{day.day.avgtemp_c}} {{ $t('tempUnit') }} </p>
           <p v-if="$i18n.locale === 'fr'">{{ $t('maxWindSpeed') }} {{day.day.maxwind_kph}} {{ $t('speedUnit') }} </p>
@@ -29,16 +29,21 @@
               <DisplayIcon v-bind:conditionCode="tmpDayDetails.day.condition.code" />
             </div>
             <div>
-              <p v-if="$i18n.locale === 'fr'">{{ $t('avgTemp') }} {{tmpDayDetails.day.avgtemp_c}} {{ $t('tempUnit') }}</p>
-              <p v-if="$i18n.locale === 'fr'">{{ $t('maxWindSpeed') }} {{tmpDayDetails.day.maxwind_kph}} {{ $t('speedUnit') }}</p>
-              <p v-if="$i18n.locale === 'en'">{{ $t('avgTemp') }} {{tmpDayDetails.day.avgtemp_f}} {{ $t('tempUnit') }}</p>
-              <p v-if="$i18n.locale === 'en'">{{ $t('maxWindSpeed') }} {{tmpDayDetails.day.maxwind_mph}} {{ $t('speedUnit') }}</p>
+              <p v-if="$i18n.locale === 'fr'">{{ $t('avgTemp') }} {{tmpDayDetails.day.avgtemp_c}} {{ $t('tempUnit') }}
+              </p>
+              <p v-if="$i18n.locale === 'fr'">{{ $t('maxWindSpeed') }} {{tmpDayDetails.day.maxwind_kph}}
+                {{ $t('speedUnit') }}</p>
+              <p v-if="$i18n.locale === 'en'">{{ $t('avgTemp') }} {{tmpDayDetails.day.avgtemp_f}} {{ $t('tempUnit') }}
+              </p>
+              <p v-if="$i18n.locale === 'en'">{{ $t('maxWindSpeed') }} {{tmpDayDetails.day.maxwind_mph}}
+                {{ $t('speedUnit') }}</p>
               <p>{{ $t('avgHumidity') }} {{tmpDayDetails.day.avghumidity}}% </p>
               <p>{{ $t('UVindex') }} {{tmpDayDetails.day.uv}}% </p>
             </div>
           </div>
           <div v-if="hourDay" @click="changeDisplayHour()">
-            <h4>{{ $t('forecastMsgSingleDayOne') }} {{formateDateFromDateAndHour(tmpDayHourDetails.time)}} {{ $t('forecastMsgSingleDayTwo') }}
+            <h4>{{ $t('forecastMsgSingleDayOne') }} {{formateDateFromDateAndHour(tmpDayHourDetails.time)}}
+              {{ $t('forecastMsgSingleDayTwo') }}
               {{formatHour(tmpDayHourDetails.time)}} </h4>
             <div>
               <p>{{tmpDayHourDetails.condition.text}}</p>
@@ -104,11 +109,11 @@ export default {
         scales: {
           yAxes: [{
             display: true,
-            title: { 
-              display: true, 
-              align: 'center', 
-              value: '°C' 
-              },
+            title: {
+              display: true,
+              align: 'center',
+              value: '°C'
+            },
             ticks: {
               fontColor: 'white'
             },
@@ -116,10 +121,10 @@ export default {
           xAxes: [{
             display: true,
             title: {
-               display: true,
-                align: 'center',
-                value: 'Heures' 
-             },
+              display: true,
+              align: 'center',
+              value: 'Heures'
+            },
             ticks: {
               fontColor: 'white'
             },
@@ -215,7 +220,7 @@ export default {
   width: 90vw;
   align-self: center;
 
-  >h3{
+  >h3 {
     margin-top: 0;
   }
 
@@ -235,19 +240,29 @@ export default {
       height: 40vh;
       width: 25vw;
 
-      &:hover{
+      &:hover {
         opacity: 0.5;
         cursor: pointer;
       }
 
-      >div{
+      >div {
         display: flex;
         justify-content: space-around;
 
-        >img{
-        max-width: 10vw;
+        >img {
+          max-width: 10vw;
+        }
       }
+
+      @media only screen and (max-width: 1025px) {
+        width: 82vw;
+        height: 100%;
+        margin-top: 2%;
       }
+    }
+
+    @media only screen and (max-width: 1025px) {
+      flex-direction: column;
     }
   }
 
@@ -271,74 +286,113 @@ export default {
 
       >.responsiveChart {
         width: 65vw;
-        height: 35vh !important;
+        height: 35vh;
+
+        >div {
+          @media only screen and (max-width: 1025px) {
+            height: auto !important;
+          }
+        }
+
+        @media only screen and (max-width: 1025px) {
+          width: 80vw;
+          height: auto;
+        }
       }
 
-      >div:nth-child(2){
+      >div:nth-child(2) {
         height: 40vh;
         overflow-y: auto;
 
         &::-webkit-scrollbar-track {
-        box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3) ;
-        -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
-        border-radius: 10px;
-        background-color: #01497c;
-      }
+          box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
+          -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
+          border-radius: 10px;
+          background-color: #01497c;
+        }
 
-      &::-webkit-scrollbar {
-        width: 12px;
-        background-color: #01497c;
-      }
+        &::-webkit-scrollbar {
+          width: 12px;
+          background-color: #01497c;
+        }
 
-      &::-webkit-scrollbar-thumb {
-        border-radius: 10px;
-        box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3) ;
-        -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, .3);
-        background-color: #FFFFFF;
-      }
+        &::-webkit-scrollbar-thumb {
+          border-radius: 10px;
+          box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
+          -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, .3);
+          background-color: #FFFFFF;
+        }
 
-        >h4{
+        >h4 {
           margin-top: 0;
         }
 
-        >div:nth-child(2){
+        >div:nth-child(2) {
           display: flex;
           justify-content: space-around;
           align-items: center;
-          >img{
+
+          >img {
             max-width: 10vw;
           }
         }
 
-        >div:nth-child(3){
+        >div:nth-child(3) {
           display: flex;
           justify-content: space-evenly;
           flex-wrap: wrap;
 
-          >p{
+          >p {
             width: 300px;
-            max-width: 40%;
+
+            @media only screen and (max-width: 1025px) {
+              width: 200px;
+            }
           }
         }
       }
 
-      >.iconMenu{
+      >.iconMenu {
         width: 2vw;
         max-width: 35px !important;
         align-self: flex-start;
         opacity: 1;
         transition: opacity .5s;
 
-        &:hover{
+        &:hover {
           cursor: pointer;
           opacity: 0.5;
         }
+
+        @media only screen and (max-width: 1025px) {
+          width: 8vw;
+          height: auto;
+          align-self: flex-end;
+        }
+      }
+
+      @media only screen and (max-width: 1025px) {
+        height: auto;
+        display: flex;
+        flex-direction: column-reverse;
+        width: 83vw;
+        height: auto;
+        margin-left: 0;
       }
     }
+
+    @media only screen and (max-width: 1025px) {
+      height: auto;
+    }
+  }
+
+  @media only screen and (max-width: 1025px) {
+    height: auto;
+    margin-left: 6vw;
   }
 }
 
-.invert{
+.invert {
   filter: invert(100%);
 }
 </style>
