@@ -197,7 +197,6 @@ export default {
     },
     formatHour(hour) {
       if (this.$i18n.locale === 'en') {
-        console.log(hour.slice(-5).substring(0, 2))
         if (parseInt(hour.slice(-5).substring(0, 2)) > 12) {
           let hourTemp = parseInt(hour.slice(-5).substring(0, 2));
           hourTemp = hourTemp - 12

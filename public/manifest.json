@@ -1,0 +1,17 @@
+{
+    "name": "weatherPlay",
+    "Description": "Display weather for the city you want !",
+    "icons": [
+      {
+        "src": "logo.svg",
+        "type": "image/svg",
+        "sizes": "150x150"
+      }
+    ],
+    "orientation": "portrait",
+    "start_url": "/",
+    "display": "standalone",
+    "theme_color": "#00568f",
+    "background_color": "#011728",
+    "lang": "fr-FR"
+  }
