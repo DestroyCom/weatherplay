@@ -11,6 +11,7 @@ export default createStore({
     errorRealtime: null,
     errorForecast: null,
     favoritesCity: [],
+    local:null
   },
   getters: {},
   mutations: {
@@ -18,11 +19,18 @@ export default createStore({
       state.city = newValue;
     },
     setFavoritesCity(state) {
-      console.log('favcity', state.favoritesCity, localStorage.getItem('favoritesCityWeatherPlay'))
       if(localStorage.getItem('favoritesCityWeatherPlay')){
-        console.log('localstorage existant')
         state.favoritesCity = JSON.parse(localStorage.getItem('favoritesCityWeatherPlay'));
       }
+    },
+    setLocals(state, local) {
+      if(local === 'fr'){
+        state.local = 'fr'
+      }
+      else if(local === 'en'){
+        state.local = 'en'
+      }
+      
     },
     setReponseRealtime(state, rep) {
       state.responseRealtime = rep;
@@ -36,7 +44,13 @@ export default createStore({
       commit,
       state
     }, city) {
-      let requestURL = 'https://api.weatherapi.com/v1/current.json?key=' + process.env.VUE_APP_WEATHER_API_KEY + '&q=' + city + '&aqi=yes&lang=fr';
+      let requestURL = ''
+      if(state.local === 'fr'){
+        requestURL = 'https://api.weatherapi.com/v1/current.json?key=' + process.env.VUE_APP_WEATHER_API_KEY + '&q=' + city + '&aqi=yes&lang=fr';
+      }
+      else if(state.local === 'en'){
+        requestURL = 'https://api.weatherapi.com/v1/current.json?key=' + process.env.VUE_APP_WEATHER_API_KEY + '&q=' + city + '&aqi=yes';
+      }
       axios.get(requestURL)
         .then(function (response) {
           commit('setReponseRealtime', response);
@@ -49,7 +63,13 @@ export default createStore({
       state,
       commit
     }, city) {
-      let requestURL = 'https://api.weatherapi.com/v1/forecast.json?key=' + process.env.VUE_APP_WEATHER_API_KEY + '&q=' + city + '&days=3&aqi=yes&lang=fr';
+      let requestURL = ''
+      if(state.local === 'fr'){
+        requestURL = 'https://api.weatherapi.com/v1/forecast.json?key=' + process.env.VUE_APP_WEATHER_API_KEY + '&q=' + city + '&days=3&aqi=yes&lang=fr';
+      }
+      else if(state.local === 'en'){
+        requestURL = 'https://api.weatherapi.com/v1/forecast.json?key=' + process.env.VUE_APP_WEATHER_API_KEY + '&q=' + city + '&days=3&aqi=yes';
+      }
       axios.get(requestURL)
         .then(function (response) {
           commit('setReponseForecast', response);
@@ -65,7 +85,6 @@ export default createStore({
     }, city) {
         let temp = state.favoritesCity;
         temp.push(city);
-        console.log('favcity', state.favoritesCity)
         commit('favoritesCity', temp);
         localStorage.setItem('favoritesCityWeatherPlay', JSON.stringify(state.favoritesCity))
     },
@@ -79,7 +98,6 @@ export default createStore({
           temp.splice(indexOfCity, 1);
         }
         commit('favoritesCity', temp);
-        console.log('favcity', state.favoritesCity)
         localStorage.setItem('favoritesCityWeatherPlay', JSON.stringify(state.favoritesCity));
     },
   },

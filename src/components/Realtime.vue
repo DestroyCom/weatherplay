@@ -1,11 +1,13 @@
 <template>
   <section id='realTime' v-if="getRealtimeGlobal !== null">
       <div>
+        <div>
           <h3>{{getRealtimeGlobal.data.location.name + ', ' + getRealtimeGlobal.data.location.region + ', ' + getRealtimeGlobal.data.location.country }}</h3> 
-          <img :src="starRegular" v-if="whichStar === 'inactive'" @click="updateFav" title="Ajouter au favoris" >
-          <img :src="starSolid" v-if="whichStar === 'active'" @click="updateFav" title="Retirer des favoris" >
+          <img :src="starRegular" v-if="whichStar === 'inactive'" @click="updateFav" :title="$t('addFavorite')" >
+          <img :src="starSolid" v-if="whichStar === 'active'" @click="updateFav" :title="$t('removeFavorite')" >
+        </div>
           <div>
-            <p>Derniere mise à jour : {{ getRealtimeGlobal.data.current.last_updated }}</p>
+            <p>{{ $t('lastUpdate') }} {{ getRealtimeGlobal.data.current.last_updated }}</p>
             <img :src='refresh' @click='refreshResult'>
           </div>
       </div>
@@ -15,12 +17,14 @@
                 <p> {{getRealtimeGlobal.data.current.condition.text}} </p>
           </div>
           <div>
-              <h4>Météo actuelle</h4>
-              <p>Temperature : {{getRealtimeGlobal.data.current.temp_c}}  C°</p>
-              <p>Vitesse du vent : {{getRealtimeGlobal.data.current.wind_kph}} km/h</p>
-              <p>Direction du vent : {{getRealtimeGlobal.data.current.wind_dir}} </p>
-              <p>Humidité : {{getRealtimeGlobal.data.current.humidity}}% </p>
-              <p>Nuages : {{getRealtimeGlobal.data.current.cloud}}% </p>
+              <h4>{{ $t('actualWeather') }}</h4>
+              <p v-if="$i18n.locale === 'fr'">{{ $t('temp') }} {{getRealtimeGlobal.data.current.temp_c}}  {{ $t('tempUnit') }}</p>
+              <p v-if="$i18n.locale === 'fr'">{{ $t('windSpeed') }} {{getRealtimeGlobal.data.current.wind_kph}} {{ $t('speedUnit') }}</p>
+              <p v-if="$i18n.locale === 'en'">{{ $t('temp') }} {{getRealtimeGlobal.data.current.temp_f}}  {{ $t('tempUnit') }}</p>
+              <p v-if="$i18n.locale === 'en'">{{ $t('windSpeed') }} {{getRealtimeGlobal.data.current.wind_mph}} {{ $t('speedUnit') }}</p>
+              <p>{{ $t('windDir') }} {{getRealtimeGlobal.data.current.wind_dir}} </p>
+              <p>{{ $t('humidity') }} {{getRealtimeGlobal.data.current.humidity}}% </p>
+              <p>{{ $t('cloud') }} {{getRealtimeGlobal.data.current.cloud}}% </p>
           </div>
       </div>
   </section>
@@ -74,15 +78,12 @@ export default {
   },
   watch:{
     getRealtimeGlobal: function(newValue){
-      console.log(newValue)
       if(this.$store.state.favoritesCity.find(el => el.toLowerCase()=== newValue.data.location.name.toLowerCase())){
-        console.log('est favori')
         this.whichStar = 'active';
       }
     },
     getCityGlobal: function(newValue){
       if(this.$store.state.favoritesCity.find(el => el.toLowerCase()=== newValue.toLowerCase())){
-        console.log('est favori')
         this.whichStar = 'active';
       }else{
         this.whichStar = 'inactive';

@@ -1,6 +1,6 @@
 <template>
   <section id='foreCast' v-if="getForecastGlobal !== null">
-    <h3 v-if="!displayDetails">Prévision des 3 prochains jours</h3>
+    <h3 v-if="!displayDetails">{{ $t('forecastMsg') }}</h3>
     <div>
       <div v-if="!displayDetails" class="threeDays">
         <div v-for="(day) in getForecastGlobal.data.forecast.forecastday" :key='day.date_epoch'
@@ -10,43 +10,47 @@
           <DisplayIcon v-bind:conditionCode="day.day.condition.code" />
           <p> {{day.day.condition.text}} </p>
           </div>
-          <p>Température moyenne : {{day.day.avgtemp_c}} C° </p>
-          <p>Vitesse maximum du vent : {{day.day.maxwind_kph}} km/h </p>
+          <p v-if="$i18n.locale === 'fr'">{{ $t('avgTemp') }} {{day.day.avgtemp_c}} {{ $t('tempUnit') }} </p>
+          <p v-if="$i18n.locale === 'fr'">{{ $t('maxWindSpeed') }} {{day.day.maxwind_kph}} {{ $t('speedUnit') }} </p>
+          <p v-if="$i18n.locale === 'en'">{{ $t('avgTemp') }} {{day.day.avgtemp_f}} {{ $t('tempUnit') }} </p>
+          <p v-if="$i18n.locale === 'en'">{{ $t('maxWindSpeed') }} {{day.day.maxwind_mph}} {{ $t('speedUnit') }} </p>
         </div>
       </div>
       <div v-if="displayDetails" class="oneDay">
         <div>
           <div class="responsiveChart">
             <Chart v-bind:chartData='dataChart' v-bind:chartOptions="chartOptions" style="width:100%;height:100%;" />
-            <p style="text-align: center">Cliquez sur les points pour avoir plus de details.</p>
+            <p style="text-align: center">{{ $t('chartIndication') }}</p>
           </div>
           <div v-if="!hourDay">
-            <h4>Résumé de la journée du {{ formateDate(tmpDayDetails.date) }}</h4>
+            <h4>{{ $t('summaryWeather') }} {{ formateDate(tmpDayDetails.date) }}</h4>
             <div>
               <p>{{tmpDayDetails.day.condition.text}}</p>
               <DisplayIcon v-bind:conditionCode="tmpDayDetails.day.condition.code" />
             </div>
             <div>
-              <p>Temperature moyenne : {{tmpDayDetails.day.avgtemp_c}} C°</p>
-              <p>Vitesse maximum du vent : {{tmpDayDetails.day.maxwind_kph}} km/h</p>
-              <p>Humidité moyenne : {{tmpDayDetails.day.avghumidity}}% </p>
-              <p>Index UV : {{tmpDayDetails.day.uv}}% </p>
+              <p v-if="$i18n.locale === 'fr'">{{ $t('avgTemp') }} {{tmpDayDetails.day.avgtemp_c}} {{ $t('tempUnit') }}</p>
+              <p v-if="$i18n.locale === 'fr'">{{ $t('maxWindSpeed') }} {{tmpDayDetails.day.maxwind_kph}} {{ $t('speedUnit') }}</p>
+              <p v-if="$i18n.locale === 'en'">{{ $t('avgTemp') }} {{tmpDayDetails.day.avgtemp_f}} {{ $t('tempUnit') }}</p>
+              <p v-if="$i18n.locale === 'en'">{{ $t('maxWindSpeed') }} {{tmpDayDetails.day.maxwind_mph}} {{ $t('speedUnit') }}</p>
+              <p>{{ $t('avgHumidity') }} {{tmpDayDetails.day.avghumidity}}% </p>
+              <p>{{ $t('UVindex') }} {{tmpDayDetails.day.uv}}% </p>
             </div>
           </div>
           <div v-if="hourDay" @click="changeDisplayHour()">
-            <h4>Prévision pour le {{formateDateFromDateAndHour(tmpDayHourDetails.time)}} à
+            <h4>{{ $t('forecastMsgSingleDayOne') }} {{formateDateFromDateAndHour(tmpDayHourDetails.time)}} {{ $t('forecastMsgSingleDayTwo') }}
               {{formatHour(tmpDayHourDetails.time)}} </h4>
             <div>
               <p>{{tmpDayHourDetails.condition.text}}</p>
               <DisplayIcon v-bind:conditionCode="tmpDayHourDetails.condition.code" />
             </div>
             <div>
-              <p>Temperature : {{tmpDayHourDetails.temp_c}} C°</p>
-              <p>Vitesse du vent : {{tmpDayHourDetails.wind_kph}} km/h</p>
-              <p>Direction du vent : {{tmpDayHourDetails.wind_dir}} </p>
-              <p>% de pluie : {{tmpDayHourDetails.chance_of_rain}} </p>
-              <p>Humidité : {{tmpDayHourDetails.humidity}}% </p>
-              <p>Nuages : {{tmpDayHourDetails.cloud}}% </p>
+              <p>{{ $t('temp') }} {{tmpDayHourDetails.temp_c}} C°</p>
+              <p>{{ $t('windSpeed') }} {{tmpDayHourDetails.wind_kph}} km/h</p>
+              <p>{{ $t('windDir') }} {{tmpDayHourDetails.wind_dir}} </p>
+              <p>{{ $t('rainProbability') }} {{tmpDayHourDetails.chance_of_rain}} </p>
+              <p>{{ $t('humidity') }} {{tmpDayHourDetails.humidity}}% </p>
+              <p>{{ $t('cloud') }} {{tmpDayHourDetails.cloud}}% </p>
             </div>
           </div>
           <img :src='close' @click='triggerDetails({})' class="iconMenu">
@@ -125,8 +129,7 @@ export default {
     }
   },
   watch:{
-    getForecastGlobal: function(newValue){
-      console.log('aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa',newValue)
+    getForecastGlobal: function(){
       this.hourDay = false;
       this.displayDetails =  false;
     }
@@ -141,7 +144,6 @@ export default {
   },
   methods: {
     triggerDetails(day) {
-      console.log(day)
       this.tmpDayDetails = day;
       if (this.displayDetails === true) {
         this.dataChart.data = [];
@@ -149,7 +151,6 @@ export default {
         this.hourDay = false;
       } else {
         this.tmpDayDetails.hour.map((hour) => {
-          console.log('laaaaaaa', hour.temp_c, this.dataChart.datasets)
           this.dataChart.datasets[0].data.push(hour.temp_c)
         })
         this.displayDetails = true;
@@ -158,9 +159,7 @@ export default {
     handle(point, event) {
       try{
         let item = event[0];
-        console.log(item._index, point);
         this.tmpDayHourDetails = this.tmpDayDetails.hour[item._index];
-        console.log(this.tmpDayHourDetails);
         this.hourDay = true;
       }
       catch{
@@ -184,13 +183,23 @@ export default {
     },
     formateDateFromDateAndHour(date) {
       let tempString = '';
-      console.log('date', date)
       date = date.slice(0, -6)
       tempString = date.substring(8) + '/' + date.substring(5).substring(0, 2) + '/' + date.substring(0).substring(0, 4);
-      console.log(tempString)
       return tempString;
     },
     formatHour(hour) {
+      if(this.$i18n.locale === 'en'){
+        console.log(hour.slice(-5).substring(0, 2))
+        if(parseInt(hour.slice(-5).substring(0, 2)) > 12){
+          let hourTemp = parseInt(hour.slice(-5).substring(0, 2));
+          hourTemp = hourTemp - 12
+          hourTemp = hourTemp.toString()
+          return hourTemp + ':' + hour.slice(-2) + ' PM'
+        }
+        else{
+          return hour.slice(-5) + ' AM'
+        }
+      }
       return hour.slice(-5)
     }
   }

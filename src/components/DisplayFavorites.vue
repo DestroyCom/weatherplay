@@ -3,7 +3,7 @@
       <a v-for="city, index in getFavorites" :key='city' @click="goToCityFav(city)">
           <img :src="starSolid">
           <p> {{city}} </p>
-          <DisplayIcon v-bind:conditionCode="codeCondition[index]" />
+          <DisplayIcon v-bind:conditionCode="codeCondition[index]" v-show="callFrom === nav" />
       </a>
   </section>
 </template>
@@ -19,11 +19,15 @@ export default {
     return{
         starSolid:starSolid,
         codeCondition: [],
+        nav: 'nav'
       }
   },
   components:{
       DisplayIcon
   },
+  props: {
+        callFrom: null,
+    },
   computed:{
     getFavorites(){
       return this.$store.state.favoritesCity;
@@ -44,11 +48,9 @@ export default {
           axios
               .get(requestURL)
               .then(function (response) {
-                  console.log('conditoncodenav', response.data.current.condition.code)
                   tempValue.push(response.data.current.condition.code)
               })
               .catch(function (error) {
-                  console.log('conditoncodenav', this)
                   console.log(error)
               })
 
@@ -79,7 +81,11 @@ margin-bottom: 5vh;
       opacity: 0.5;
     }
 
-    img{
+    >img:nth-child(1){
+      max-width: 15%;
+    }
+
+    >img:nth-child(3){
       max-width: 25%;
     }
   }

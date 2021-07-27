@@ -46,7 +46,6 @@ export default {
   },
   methods: {
           getRightSrc(code) {
-              console.log('code', code)
               switch (code) {
                   case 1000:
                       return this.clearDay;                   

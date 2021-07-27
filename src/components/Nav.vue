@@ -8,15 +8,15 @@
         <div class='displayField hidden'>
           <h1>weatherPlay</h1>
           <div>
-            <p>Rechercher une ville :</p>
+            <p>{{ $t('searchIndication') }}</p>
             <input type="text" v-model="cityTemp" placeholder="Paris, France" />
-            <p @click="updateCity" v-if='cityTemp != null '>RECHERCHER</p>
+            <p @click="updateCity" v-if='cityTemp != null '>{{ $t('searchButton') }}</p>
           </div>
           <div>
-            <h4>Vos favoris:</h4>
-            <DisplayFavorites :key='getCityGlobal' />
+            <h4>{{ $t('favoritesMessage') }}</h4>
+            <DisplayFavorites :key='getCityGlobal' v-bind:callFrom="nav" />
           </div>
-          <p>Powered by</p>
+          <p>{{ $t('creditsWeatherAPI') }}</p>
           <a href="https://www.weatherapi.com/" title="Free Weather API"><img src='//cdn.weatherapi.com/v4/images/weatherapi_logo.png' alt="Weather data by WeatherAPI.com" border="0"></a>
         </div>
 
@@ -39,7 +39,8 @@ export default {
       menu: menu,
       close: close,
       search:search,
-      star:star
+      star:star,
+      nav:'nav'
     }
   },
   components:{
@@ -99,6 +100,10 @@ nav {
     flex-direction: column;
     align-self: center;
     align-items: center;
+
+    >h1{
+      margin-top: 0;
+    }
 
     >div:nth-child(3) {
       text-align: center;

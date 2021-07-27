@@ -1,14 +1,14 @@
 <template>
   <div id='home'>
     <h1>weatherPlay</h1>
-    <p>Rechercher une ville :</p>
+    <p>{{ $t('searchIndication') }}</p>
     <input type="text" v-model="cityTemp" placeholder="Paris, France" />
-    <p @click="updateCity" v-if='cityTemp != null '>RECHERCHER</p>
+    <p @click="updateCity" v-if='cityTemp != null '>{{ $t('searchButton') }}</p>
     <div>
-      <h3>Vos favoris :</h3>
+      <h3>{{ $t('favoritesMessage') }}</h3>
       <DisplayFavorites :key='cityTemp' />
     </div>
-    <p>Powered by <a href="https://www.weatherapi.com/" title="Weather API">WeatherAPI.com</a></p>
+    <p>{{ $t('creditsWeatherAPI') }} <a href="https://www.weatherapi.com/" title="Weather API">WeatherAPI.com</a></p>
   </div>
 </template>
 

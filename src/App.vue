@@ -30,8 +30,6 @@ export default {
   },
   computed:{
     getCityGlobal(){
-      console.log('appel affichage ville')
-      console.log(this.$store.state.city)
       return this.$store.state.city;
     },
     getCityDouble(){
@@ -40,6 +38,7 @@ export default {
   },
   mounted(){
     this.$store.commit('setFavoritesCity');
+    this.$store.commit('setLocals', this.$i18n.locale);
   }
 }
 </script>
@@ -65,7 +64,7 @@ html, body{
 
     >div{
       margin-left: 5vw;
-      width: 100vw;
+      width: 100%;
       display: flex;
       flex-direction: column;
       align-items: flex-end;
