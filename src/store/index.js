@@ -101,6 +101,11 @@ export default createStore({
         commit('favoritesCity', temp);
         localStorage.setItem('favoritesCityWeatherPlay', JSON.stringify(state.favoritesCity));
     },
+    updateLocale({
+      state
+    }, locale) {
+        state.local = locale;
+    },
   },
   modules: {}
 })

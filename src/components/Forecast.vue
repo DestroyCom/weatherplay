@@ -12,8 +12,8 @@
           </div>
           <p v-if="$i18n.locale === 'fr'">{{ $t('avgTemp') }} {{day.day.avgtemp_c}} {{ $t('tempUnit') }} </p>
           <p v-if="$i18n.locale === 'fr'">{{ $t('maxWindSpeed') }} {{day.day.maxwind_kph}} {{ $t('speedUnit') }} </p>
-          <p v-if="$i18n.locale === 'en'">{{ $t('avgTemp') }} {{day.day.avgtemp_f}} {{ $t('tempUnit') }} </p>
-          <p v-if="$i18n.locale === 'en'">{{ $t('maxWindSpeed') }} {{day.day.maxwind_mph}} {{ $t('speedUnit') }} </p>
+          <p v-if="$i18n.locale === 'en'">{{ $t('avgTemp') }} {{day.day.avgtemp_c}} °C / {{day.day.avgtemp_f}} {{ $t('tempUnit') }} </p>
+          <p v-if="$i18n.locale === 'en'">{{ $t('maxWindSpeed') }} {{day.day.maxwind_kph}} km/h / {{day.day.maxwind_mph}} {{ $t('speedUnit') }} </p>
         </div>
       </div>
       <div v-if="displayDetails" class="oneDay">
@@ -33,9 +33,9 @@
               </p>
               <p v-if="$i18n.locale === 'fr'">{{ $t('maxWindSpeed') }} {{tmpDayDetails.day.maxwind_kph}}
                 {{ $t('speedUnit') }}</p>
-              <p v-if="$i18n.locale === 'en'">{{ $t('avgTemp') }} {{tmpDayDetails.day.avgtemp_f}} {{ $t('tempUnit') }}
+              <p v-if="$i18n.locale === 'en'">{{ $t('avgTemp') }} {{tmpDayDetails.day.avgtemp_c}} °C | {{tmpDayDetails.day.avgtemp_f}} {{ $t('tempUnit') }}
               </p>
-              <p v-if="$i18n.locale === 'en'">{{ $t('maxWindSpeed') }} {{tmpDayDetails.day.maxwind_mph}}
+              <p v-if="$i18n.locale === 'en'">{{ $t('maxWindSpeed') }} {{tmpDayDetails.day.maxwind_kph}} km/h | {{tmpDayDetails.day.maxwind_mph}}
                 {{ $t('speedUnit') }}</p>
               <p>{{ $t('avgHumidity') }} {{tmpDayDetails.day.avghumidity}}% </p>
               <p>{{ $t('UVindex') }} {{tmpDayDetails.day.uv}}% </p>
@@ -50,9 +50,11 @@
               <DisplayIcon v-bind:conditionCode="tmpDayHourDetails.condition.code" />
             </div>
             <div>
-              <p>{{ $t('temp') }} {{tmpDayHourDetails.temp_c}} C°</p>
-              <p>{{ $t('windSpeed') }} {{tmpDayHourDetails.wind_kph}} km/h</p>
-              <p>{{ $t('windDir') }} {{tmpDayHourDetails.wind_dir}} </p>
+              <p v-if="$i18n.locale === 'fr'">{{ $t('temp') }} {{tmpDayHourDetails.temp_c}} °C</p>
+              <p v-if="$i18n.locale === 'en'">{{ $t('temp') }} {{tmpDayHourDetails.temp_c}} °C | {{tmpDayHourDetails.temp_f}} °F</p>
+              <p v-if="$i18n.locale === 'fr'">{{ $t('windSpeed') }} {{tmpDayHourDetails.wind_kph}} km/h</p>
+              <p v-if="$i18n.locale === 'en'">{{ $t('windSpeed') }} {{tmpDayHourDetails.wind_kph}} km/h | {{tmpDayHourDetails.wind_mph}} mph</p>
+              <DisplayWindDirection v-bind:windDirection="tmpDayHourDetails.wind_dir" />
               <p>{{ $t('rainProbability') }} {{tmpDayHourDetails.chance_of_rain}} </p>
               <p>{{ $t('humidity') }} {{tmpDayHourDetails.humidity}}% </p>
               <p>{{ $t('cloud') }} {{tmpDayHourDetails.cloud}}% </p>
@@ -69,11 +71,13 @@
 import Chart from './Chart.vue';
 import DisplayIcon from './DisplayIcon.vue';
 import close from '../assets/closemenu.svg';
+import DisplayWindDirection from './DisplayWindDirection.vue';
 
 export default {
   components: {
     Chart,
-    DisplayIcon
+    DisplayIcon,
+    DisplayWindDirection
   },
   name: 'Forecast',
   data() {

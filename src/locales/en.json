@@ -24,5 +24,21 @@
   "chartIndication": "Click on the dots for more details.",
   "summaryWeather": "Summary of the day ",
   "UVindex" : "UV Index :",
-  "rainProbability" : "Probability of rain :"
+  "rainProbability" : "Probability of rain :",
+  "windDir-N" : "North",
+  "windDir-NE" : "Northeast",
+  "windDir-NNE" : "North-Northeast",
+  "windDir-E" : "East",
+  "windDir-ENE" : "East-Northeast",
+  "windDir-SE" : "Southeast",
+  "windDir-SSE" : "South-Southeast",
+  "windDir-S" : "South",
+  "windDir-SSW" : "South-Southwest",
+  "windDir-SW" : "Southwest",
+  "windDir-WSW" : "West-Southwest",
+  "windDir-W" : "West",
+  "windDir-WNW" : "West-Northwest",
+  "windDir-NW" : "Northwest",
+  "windDir-NNW" : "North-Northwest",
+  "windDir-ESE" : "East-Southeast"
   }

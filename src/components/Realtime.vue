@@ -25,11 +25,11 @@
         </p>
         <p v-if="$i18n.locale === 'fr'">{{ $t('windSpeed') }} {{getRealtimeGlobal.data.current.wind_kph}}
           {{ $t('speedUnit') }}</p>
-        <p v-if="$i18n.locale === 'en'">{{ $t('temp') }} {{getRealtimeGlobal.data.current.temp_f}} {{ $t('tempUnit') }}
+        <p v-if="$i18n.locale === 'en'">{{ $t('temp') }} {{getRealtimeGlobal.data.current.temp_c}} °C | {{getRealtimeGlobal.data.current.temp_f}} {{ $t('tempUnit') }}
         </p>
-        <p v-if="$i18n.locale === 'en'">{{ $t('windSpeed') }} {{getRealtimeGlobal.data.current.wind_mph}}
+        <p v-if="$i18n.locale === 'en'">{{ $t('windSpeed') }} {{getRealtimeGlobal.data.current.wind_kph}} km/h | {{getRealtimeGlobal.data.current.wind_mph}}
           {{ $t('speedUnit') }}</p>
-        <p>{{ $t('windDir') }} {{getRealtimeGlobal.data.current.wind_dir}} </p>
+        <DisplayWindDirection v-bind:windDirection="getRealtimeGlobal.data.current.wind_dir" />
         <p>{{ $t('humidity') }} {{getRealtimeGlobal.data.current.humidity}}% </p>
         <p>{{ $t('cloud') }} {{getRealtimeGlobal.data.current.cloud}}% </p>
       </div>
@@ -43,11 +43,13 @@ import starRegular from '../assets/starRegular.svg';
 import starSolid from '../assets/starSolid.svg';
 import DisplayIcon from './DisplayIcon.vue';
 import ButtonLang from './ButtonLang.vue';
+import DisplayWindDirection from './DisplayWindDirection.vue';
 
 export default {
   components: {
     DisplayIcon,
-    ButtonLang
+    ButtonLang,
+    DisplayWindDirection
   },
   name: 'Realtime',
   data() {
@@ -68,6 +70,9 @@ export default {
     getFavorites() {
       return this.$store.state.favoritesCity;
     },
+    getLocale(){
+      return this.$i18n.locale;
+    }
   },
   methods: {
     refreshResult() {
@@ -97,6 +102,10 @@ export default {
         this.whichStar = 'inactive';
       }
     },
+    getLocale: function(){
+      this.$store.dispatch('callRealtime', this.getCityGlobal);
+      this.$store.dispatch('callForecast', this.getCityGlobal);
+    }
   }
 }
 </script>
