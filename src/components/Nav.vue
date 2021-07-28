@@ -57,6 +57,16 @@ export default {
       return this.$store.state.responseRealtime;
     },
   },
+  watch:{
+    getRealtimeGlobal: function(){
+      if (this.displayBar === true) {
+        document.querySelector('.nav').classList.remove('open');
+        document.querySelector('.nav').classList.add('close');
+        document.querySelector('.displayField').classList.add('hidden');
+        this.displayBar = false;
+      }
+    }
+  },
   methods: {
     updateCity() {
       this.$store.commit('setCityFromSearchInput', this.cityTemp);
