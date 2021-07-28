@@ -1,5 +1,6 @@
 {
-  "searchIndication": "Rechercher une ville :",
+  "searchIndication": "Entrez une ville :",
+  "searchRecommandation" : "Votre ville ici (ex. Paris)",
   "searchButton": "RECHERCHER",
   "favoritesMessage": "Vos favoris :",
   "creditsWeatherAPI": "Alimenté par",

@@ -1,5 +1,6 @@
 {
-  "searchIndication": "Search for a city :",
+  "searchIndication": "Enter a city :",
+  "searchRecommandation" : "Your city here",
   "searchButton": "SEARCH",
   "favoritesMessage": "Your favorites :",
   "creditsWeatherAPI": "Powered by",

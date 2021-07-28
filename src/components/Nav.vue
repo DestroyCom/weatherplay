@@ -9,7 +9,7 @@
         <h1>weatherPlay</h1>
         <div>
           <p>{{ $t('searchIndication') }}</p>
-          <input type="text" v-model="cityTemp" placeholder="Paris, France" />
+          <input type="text" v-model="cityTemp" :placeholder="$t('searchRecommandation')" />
           <p @click="updateCity" v-if='cityTemp != null ' class="buttonSearchAvailable">{{ $t('searchButton') }}</p>
           <p v-if='cityTemp === null ' class="buttonSearch">{{ $t('searchButton') }}</p>
         </div>
@@ -109,6 +109,30 @@ nav {
 
     >h1 {
       margin: 0;
+    }
+
+    >div:nth-child(2) {
+
+      ::placeholder {
+        color: white;
+        opacity: 0.5;
+      }
+
+      >input {
+        border: none;
+        border-bottom: white solid 1px;
+        background-color: transparent;
+        outline: none;
+        color: white;
+
+        &:focus {
+          color: white;
+        }
+
+        &:focus::placeholder {
+          color: white;
+        }
+      }
     }
 
     >div:nth-child(3) {

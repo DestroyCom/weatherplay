@@ -2,7 +2,7 @@
   <div id='home'>
     <h1>weatherPlay</h1>
     <p>{{ $t('searchIndication') }}</p>
-    <input type="text" v-model="cityTemp" placeholder="Paris, France" />
+    <input type="text" v-model="cityTemp" :placeholder="$t('searchRecommandation')" />
     <div>
       <div @click="updateCity" v-if='cityTemp != null ' class="buttonSearchAvailable">
         <p>{{ $t('searchButton') }}</p>
@@ -57,6 +57,7 @@ export default {
 
     ::placeholder {
       color: white;
+      opacity: 0.5;
     }
 
     >input {
